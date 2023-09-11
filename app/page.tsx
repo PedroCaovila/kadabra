@@ -9,6 +9,7 @@ import DropDown2, { HabilidadesType } from '../components/DropDown2';
 import DropDown3, { AtividadesType } from '../components/DropDown3';
 import DropDown4, { ObjetivosType } from '../components/DropDown4';
 import DropDown5, { IdadesType } from '../components/DropDown5';
+import DropDown6, { DificuldadesType } from '../components/DropDown6';
 import Footer from '../components/Footer';
 import Github from '../components/GitHub';
 import Header from '../components/Header';
@@ -21,6 +22,7 @@ export default function Page() {
   const [atividade, setatividade] = useState('Selecione a atividade...');
   const [objetivo, setobjetivo] = useState('Selecione um objetivo...');
   const [idade, setidade] = useState('Selecione uma faixa etária...');
+  const [dificuldade, setdificuldade] = useState('Selecione a dificuldade...');
   const bioRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBios = () => {
@@ -37,6 +39,7 @@ export default function Page() {
         atividade,
         objetivo,
         idade,
+        dificuldade,
         bio,
       },
       onResponse() {
@@ -63,7 +66,7 @@ export default function Page() {
         <h1 className="sm:text-5xl text-4xl max-w-[900px] font-bold mt-10 text-slate-900">
           Qual atividade você gostaria de elaborar hoje?
         </h1>
-        <p className="text-slate-500 mt-5">Usando IA para elaborar atividades escolares em um passe de mágica.</p>
+        <p className="text-slate-500 mt-5 font-semibold">Usando IA para elaborar atividades escolares em um passe de mágica.</p>
         <form className="max-w-xl w-full" onSubmit={onSubmit}>
           <div className="flex mt-10 items-center space-x-3">
             <Image
@@ -152,6 +155,14 @@ export default function Page() {
           </div>
           <div className="block">
             <DropDown5 idade={idade} setidade={(newidade) => setidade(newidade)} />
+          </div>
+
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/8-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha a dificuldade da atividade.</p>
+          </div>
+          <div className="block">
+            <DropDown6 dificuldade={dificuldade} setdificuldade={(newdificuldade) => setdificuldade(newdificuldade)} />
           </div>
 
           {!isLoading && (
