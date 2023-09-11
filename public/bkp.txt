@@ -228,6 +228,8 @@ export default function DropDown2({
 
 page
 
+
+
 'use client';
 
 import Image from 'next/image';
@@ -235,6 +237,8 @@ import { useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import DropDown, { DisciplinasType } from '../components/DropDown';
 import DropDown2, { HabilidadesType } from '../components/DropDown2';
+import DropDown3, { AtividadesType } from '../components/DropDown3';
+import DropDown4, { ObjetivosType } from '../components/DropDown4';
 import Footer from '../components/Footer';
 import Github from '../components/GitHub';
 import Header from '../components/Header';
@@ -244,6 +248,8 @@ export default function Page() {
   const [bio, setBio] = useState('');
   const [disciplina, setdisciplina] = useState('Selecione a disciplina...');
   const [habilidade, sethabilidade] = useState('Selecione a habilidade...');
+  const [atividade, setatividade] = useState('Selecione a atividade...');
+  const [objetivo, setobjetivo] = useState('Selecione um objetivo...');
   const bioRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBios = () => {
@@ -257,12 +263,14 @@ export default function Page() {
       body: {
         disciplina,
         habilidade,
+        atividade,
+        objetivo,
         bio,
       },
       onResponse() {
         scrollToBios();
       },
-    });''
+    }); ''
 
   const onSubmit = (e: any) => {
     setBio(input);
@@ -274,13 +282,20 @@ export default function Page() {
 
   return (
     <div className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
-      style={{background: "no-repeat center/cover url(/bkgrnd.png)"}}>
+      style={{ background: "no-repeat center/cover url(/bkgrnd.png)" }}>
 
       <Header />
-      <main className="flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain"
-       style={{backgroundImage: "url(/mainbkg.png)", minHeight: "100vh"}}>
-        
-        <h1 className="sm:text-5xl text-4xl max-w-[708px] font-bold mt-5 text-slate-900">
+      <main
+        className="flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain"
+        style={{
+          backgroundImage: "url(/mainbkg.png)",
+          backgroundSize: "cover", // Ajusta a imagem de fundo para cobrir todo o elemento
+          backgroundAttachment: "local", // Mantém a imagem de fundo fixa enquanto a página é rolada
+          minHeight: "100vh", // Define a altura mínima para ocupar toda a altura da janela de visualização
+        }}
+      >
+
+        <h1 className="sm:text-5xl text-4xl max-w-[900px] font-bold mt-10 text-slate-900">
           Qual atividade você gostaria de elaborar hoje?
         </h1>
         <p className="text-slate-500 mt-5">Usando IA para elaborar atividades escolares em um passe de mágica.</p>
@@ -326,17 +341,39 @@ export default function Page() {
             <DropDown2 habilidade={habilidade} sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)} />
           </div>
 
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/4-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha o tipo de atividade.</p>
+          </div>
+          <div className="block">
+            <DropDown3 atividade={atividade} setatividade={(newatividade) => setatividade(newatividade)} />
+          </div>
+
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/5-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha qual o objetivo da sua atividade{' '}
+              <span className="text-slate-500">
+                (usaremos a Taxonomia de Bloom)
+              </span>
+              .
+            </p>
+          </div>
+          <div className="block">
+            <DropDown4 objetivo={objetivo} setobjetivo={(newobjetivo) => setobjetivo(newobjetivo)} />
+          </div>
+
           {!isLoading && (
             <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-contain"
+              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
               type="submit"
             >
-             Gerar palavras mágicas &rarr;
+              Gerar palavras mágicas &rarr;
+
             </button>
           )}
           {isLoading && (
             <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
+              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
               disabled
             >
               <span className="loading">
@@ -393,3 +430,4 @@ export default function Page() {
     </div>
   );
 }
+

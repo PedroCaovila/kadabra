@@ -6,6 +6,9 @@ import { useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import DropDown, { DisciplinasType } from '../components/DropDown';
 import DropDown2, { HabilidadesType } from '../components/DropDown2';
+import DropDown3, { AtividadesType } from '../components/DropDown3';
+import DropDown4, { ObjetivosType } from '../components/DropDown4';
+import DropDown5, { IdadesType } from '../components/DropDown5';
 import Footer from '../components/Footer';
 import Github from '../components/GitHub';
 import Header from '../components/Header';
@@ -15,6 +18,9 @@ export default function Page() {
   const [bio, setBio] = useState('');
   const [disciplina, setdisciplina] = useState('Selecione a disciplina...');
   const [habilidade, sethabilidade] = useState('Selecione a habilidade...');
+  const [atividade, setatividade] = useState('Selecione a atividade...');
+  const [objetivo, setobjetivo] = useState('Selecione um objetivo...');
+  const [idade, setidade] = useState('Selecione uma faixa etária...');
   const bioRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBios = () => {
@@ -28,12 +34,15 @@ export default function Page() {
       body: {
         disciplina,
         habilidade,
+        atividade,
+        objetivo,
+        idade,
         bio,
       },
       onResponse() {
         scrollToBios();
       },
-    });''
+    }); ''
 
   const onSubmit = (e: any) => {
     setBio(input);
@@ -45,13 +54,13 @@ export default function Page() {
 
   return (
     <div className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
-      style={{background: "no-repeat center/cover url(/bkgrnd.png)"}}>
+      style={{ background: "no-repeat center/cover url(/bkgrnd.png)" }}>
 
       <Header />
-      <main className="flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain"
-       style={{backgroundImage: "url(/mainbkg.png)", minHeight: "100vh"}}>
-        
-        <h1 className="sm:text-5xl text-4xl max-w-[708px] font-bold mt-5 text-slate-900">
+      <main
+        className="backdrop-blur-sm bg-white/70 flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain">
+
+        <h1 className="sm:text-5xl text-4xl max-w-[900px] font-bold mt-10 text-slate-900">
           Qual atividade você gostaria de elaborar hoje?
         </h1>
         <p className="text-slate-500 mt-5">Usando IA para elaborar atividades escolares em um passe de mágica.</p>
@@ -97,17 +106,66 @@ export default function Page() {
             <DropDown2 habilidade={habilidade} sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)} />
           </div>
 
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/4-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha o tipo de atividade.</p>
+          </div>
+          <div className="block">
+            <DropDown3 atividade={atividade} setatividade={(newatividade) => setatividade(newatividade)} />
+          </div>
+
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/5-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Informe o número de questões{' '}
+            <span className="text-slate-500">
+                (caso seja uma atividade com questões múltipla escolha)
+              </span>
+            .
+            </p>
+          </div>
+          <textarea
+            value={input}
+            onChange={handleInputChange}
+            rows={1}
+            className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
+            placeholder={
+              '"3","cinco"...'
+            }
+          />
+
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/6-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha qual o objetivo da sua atividade{' '}
+              <span className="text-slate-500">
+                (usaremos a Taxonomia de Bloom)
+              </span>
+              .
+            </p>
+          </div>
+          <div className="block">
+            <DropDown4 objetivo={objetivo} setobjetivo={(newobjetivo) => setobjetivo(newobjetivo)} />
+          </div>
+
+          <div className="flex mt-5 mb-5 items-center space-x-3">
+            <Image src="/7-black.png" width={28} height={28} alt="1 icon" />
+            <p className="text-left font-medium">Escolha a faixa etária dos alunos.</p>
+          </div>
+          <div className="block">
+            <DropDown5 idade={idade} setidade={(newidade) => setidade(newidade)} />
+          </div>
+
           {!isLoading && (
             <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-contain"
+              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
               type="submit"
             >
-             Gerar palavras mágicas &rarr;
+              Gerar palavras mágicas &rarr;
+
             </button>
           )}
           {isLoading && (
             <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
+              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
               disabled
             >
               <span className="loading">

@@ -12,6 +12,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+export type HabilidadesType = "Selecione a habilidade...";
+
 interface DropDown2Props {
   habilidade: string;
   sethabilidade: (habilidade: string) => void;

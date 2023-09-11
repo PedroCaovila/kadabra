@@ -4,8 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return (
 
-        <header className="flex justify-center items-center w-full border-b-auto pb-10 sm:px-4 px-2" 
-          style={{background: "no-repeat center/auto url(/headerbkg.png)", backgroundSize: "auto"}}>
+        <header className="backdrop-blur-sm bg-white/70 flex justify-center items-center w-[900px] border-b-auto pb-10 sm:px-4 px-2">
       
       <Link href="/" className="flex space-x-2 mx-auto mt-10 items-center">
         <Image

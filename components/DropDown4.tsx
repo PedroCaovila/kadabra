@@ -10,25 +10,25 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export type DisciplinasType = "Selecione a disciplina...";
+export type ObjetivosType = "Selecione um objetivo...";
 
-interface DropDownProps {
-  disciplina: string; // Altere para usar uma string em vez de um tipo fixo
-  setdisciplina: (disciplina: string) => void;
+interface Dropdown4Props {
+  objetivo: string; // Altere para usar uma string em vez de um tipo fixo
+  setobjetivo: (objetivo: string) => void;
 }
 
-export default function DropDown({ disciplina, setdisciplina }: DropDownProps) {
-  const [disciplinas, setDisciplinas] = useState<string[]>([]);
+export default function Dropdown4({ objetivo, setobjetivo }: Dropdown4Props) {
+  const [objetivos, setobjetivos] = useState<string[]>([]);
 
   useEffect(() => {
-    // Carregar disciplinas do arquivo de texto "disciplinas.txt"
-    fetch('disciplinas.txt')
+    // Carregar objetivos do arquivo de texto "objetivos.txt"
+    fetch('objetivos.txt')
       .then(response => response.text())
       .then(data => {
         // Dividir o conteúdo do arquivo em linhas e remover linhas em branco
         const lines = data.split('\n').filter(line => line.trim() !== '');
 
-        setDisciplinas(lines);
+        setobjetivos(lines);
       });
   }, []); // Executa apenas uma vez durante o carregamento do componente
 
@@ -36,7 +36,7 @@ export default function DropDown({ disciplina, setdisciplina }: DropDownProps) {
     <Menu as="div" className="relative block text-left w-full">
       <div>
         <Menu.Button className="inline-flex w-full justify-between items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black">
-          {disciplina}
+          {objetivo}
           <ChevronUpIcon
             className="-mr-1 ml-2 h-5 w-5 ui-open:hidden"
             aria-hidden="true"
@@ -59,22 +59,22 @@ export default function DropDown({ disciplina, setdisciplina }: DropDownProps) {
       >
         <Menu.Items
           className="overflow-y-scroll max-h-[150px] absolute left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-          key={disciplina}
+          key={objetivo}
         >
           <div className="">
-            {disciplinas.map((disciplinaItem) => (
-              <Menu.Item key={disciplinaItem}>
+            {objetivos.map((objetivoItem) => (
+              <Menu.Item key={objetivoItem}>
                 {({ active }) => (
                   <button
-                    onClick={() => setdisciplina(disciplinaItem)}
+                    onClick={() => setobjetivo(objetivoItem)}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      disciplina === disciplinaItem ? "bg-gray-200" : "",
+                      objetivo === objetivoItem ? "bg-gray-200" : "",
                       "px-4 py-2 text-sm w-full text-left flex items-center space-x-2 justify-between"
                     )}
                   >
-                    <span>{disciplinaItem}</span>
-                    {disciplina === disciplinaItem ? (
+                    <span>{objetivoItem}</span>
+                    {objetivo === objetivoItem ? (
                       <CheckIcon className="w-4 h-4 text-bold" />
                     ) : null}
                   </button>
