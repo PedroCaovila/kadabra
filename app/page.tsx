@@ -45,7 +45,7 @@ export default function Page() {
       onResponse() {
         scrollToBios();
       },
-    }); ''
+    });
 
   const onSubmit = (e: any) => {
     setBio(input);
@@ -54,6 +54,8 @@ export default function Page() {
 
   const lastMessage = messages[messages.length - 1];
   const generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
+  
+  const frase = "Utilizando como a habilidade " + habilidade + " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " + objetivo + ", elabore uma/um " + atividade + " de nível " + dificuldade + " da disciplina " + disciplina + " com o tema " + input + " para alunos de " + idade + ".";
 
   return (
     <div className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
@@ -93,6 +95,7 @@ export default function Page() {
               '"Síntese proteica e hipertrofia muscular", "Formas geométricas espaciais, vértices, arestas e faces", "Conceito de Cultura Sustentável"... '
             }
           />
+          
           <div className="flex mb-5 items-center space-x-3">
             <Image src="/2-black.png" width={30} height={30} alt="1 icon" />
             <p className="text-left font-medium">Escolha a disciplina.</p>
@@ -103,7 +106,13 @@ export default function Page() {
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/3-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha a habilidade BNCC desejada.</p>
+            <p className="text-left font-medium">Escolha a habilidade BNCC desejada.{' '}
+              <span className="text-slate-500">
+                <a href="https://media.tutormundi.com/wp-content/uploads/2021/01/27200057/habilidades-bncc-ensino-fundamental-1024x1024.png" target="_blank">
+                  (Saiba mais)
+                </a>
+              </span>
+            </p>
           </div>
           <div className="block">
             <DropDown2 habilidade={habilidade} sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)} />
@@ -119,28 +128,9 @@ export default function Page() {
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/5-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Informe o número de questões{' '}
-            <span className="text-slate-500">
-                (caso seja uma atividade com questões múltipla escolha)
-              </span>
-            .
-            </p>
-          </div>
-          <textarea
-            value={input}
-            onChange={handleInputChange}
-            rows={1}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-            placeholder={
-              '"3","cinco"...'
-            }
-          />
-
-          <div className="flex mt-5 mb-5 items-center space-x-3">
-            <Image src="/6-black.png" width={28} height={28} alt="1 icon" />
             <p className="text-left font-medium">Escolha qual o objetivo da sua atividade{' '}
               <span className="text-slate-500">
-                (usaremos a Taxonomia de Bloom)
+                (usaremos a Taxonomia de Bloom para ajudar na criação da atividade)
               </span>
               .
             </p>
@@ -150,7 +140,7 @@ export default function Page() {
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
-            <Image src="/7-black.png" width={28} height={28} alt="1 icon" />
+            <Image src="/6-black.png" width={28} height={28} alt="1 icon" />
             <p className="text-left font-medium">Escolha a faixa etária dos alunos.</p>
           </div>
           <div className="block">
@@ -158,19 +148,29 @@ export default function Page() {
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
-            <Image src="/8-black.png" width={28} height={28} alt="1 icon" />
+            <Image src="/7-black.png" width={28} height={28} alt="1 icon" />
             <p className="text-left font-medium">Escolha a dificuldade da atividade.</p>
           </div>
           <div className="block">
             <DropDown6 dificuldade={dificuldade} setdificuldade={(newdificuldade) => setdificuldade(newdificuldade)} />
           </div>
-
+          <Toaster
+            position="bottom-center"
+            reverseOrder={false}
+            toastOptions={{ duration: 2000 }}
+          />
+          <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
           {!isLoading && (
             <button
               className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
               type="submit"
+              onClick={() => {
+                navigator.clipboard.writeText(frase);
+                toast('Comando copiado para a área de transferência', { icon: '📋' });
+              }}
             >
               Gerar palavras mágicas &rarr;
+
 
             </button>
           )}
@@ -187,46 +187,8 @@ export default function Page() {
             </button>
           )}
         </form>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          toastOptions={{ duration: 2000 }}
-        />
-        <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
         <output className="space-y-10 my-10">
-          {generatedBios && (
-            <>
-              <div>
-                <h2
-                  className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto"
-                  ref={bioRef}
-                >
-                  Your generated bios
-                </h2>
-              </div>
-              <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
-                {generatedBios
-                  .substring(generatedBios.indexOf('1') + 3)
-                  .split('2.')
-                  .map((generatedBio) => {
-                    return (
-                      <div
-                        className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
-                        onClick={() => {
-                          navigator.clipboard.writeText(generatedBio);
-                          toast('Comando copiado para a área de transferência', {
-                            icon: '📋',
-                          });
-                        }}
-                        key={generatedBio}
-                      >
-                        <p>{generatedBio}</p>
-                      </div>
-                    );
-                  })}
-              </div>
-            </>
-          )}
+
         </output>
       </main>
       <Footer />
