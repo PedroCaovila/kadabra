@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return (
 
-        <header className="backdrop-blur-sm rounded-lg bg-white/70 flex justify-center items-center w-[900px] border-b-auto pb-10 sm:px-4 px-2">
+        <header className="backdrop-blur-[1px] rounded-lg bg-white/70 flex justify-center items-center w-[900px] border-b-auto pb-10 sm:px-4 px-2">
       
       <Link href="/" className="flex space-x-2 mx-auto mt-10 items-center">
         <Image

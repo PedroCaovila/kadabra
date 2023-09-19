@@ -63,7 +63,7 @@ export default function Page() {
 
       <Header />
       <main
-        className="backdrop-blur-sm rounded-lg bg-white/70 flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain">
+        className="backdrop-blur-[1px] rounded-lg bg-white/70 flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain">
 
         <h1 className="sm:text-5xl text-4xl max-w-[900px] font-bold mt-10 text-slate-900">
           Qual atividade você gostaria de elaborar hoje?
