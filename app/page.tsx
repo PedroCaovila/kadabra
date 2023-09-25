@@ -11,9 +11,9 @@ import DropDown4, { ObjetivosType } from '../components/DropDown4';
 import DropDown5, { IdadesType } from '../components/DropDown5';
 import DropDown6, { DificuldadesType } from '../components/DropDown6';
 import Footer from '../components/Footer';
-import Github from '../components/GitHub';
 import Header from '../components/Header';
 import { useChat } from 'ai/react';
+import React from 'react';
 
 export default function Page() {
   const [bio, setBio] = useState('');
@@ -48,13 +48,8 @@ export default function Page() {
     });
 
   const onSubmit = (e: any) => {
-    setBio(input);
-    handleSubmit(e);
   };
 
-  const lastMessage = messages[messages.length - 1];
-  const generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
-  
   const frase = "Utilizando como a habilidade " + habilidade + " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " + objetivo + ", elabore uma/um " + atividade + " de nível " + dificuldade + " da disciplina " + disciplina + " com o tema " + input + " para alunos de " + idade + ".";
 
   return (
@@ -95,7 +90,7 @@ export default function Page() {
               '"Síntese proteica e hipertrofia muscular", "Formas geométricas espaciais, vértices, arestas e faces", "Conceito de Cultura Sustentável"... '
             }
           />
-          
+
           <div className="flex mb-5 items-center space-x-3">
             <Image src="/2-black.png" width={30} height={30} alt="1 icon" />
             <p className="text-left font-medium">Escolha a disciplina.</p>

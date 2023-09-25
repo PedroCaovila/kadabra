@@ -1,0 +1,103 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.btn {
+    text-align: center;
+    place-self: center;
+    font-size: 2rem;
+    padding: 1rem 2rem 1rem 2rem;
+    color: grey;
+    text-decoration: none;
+    animation: btn-animation 3000ms 2s ease-in-out forwards;
+}
+
+@keyframes btn-animation {
+    0% {
+        transform: translateX(0px);
+
+    }
+
+    35% {
+        scale: 50%;
+        transform: translateX(1000px);
+    }
+
+    45% {
+        transform: translateX(650px) translateY(-300px) rotate(-20deg);
+    }
+
+    55% {
+        transform: translateX(500px) rotate(20deg);
+    }
+
+    65% {
+        transform: translateX(300px) translateY(200px) rotate(15deg);
+    }
+
+    75% {
+        transform: translateX(100px) rotate(-15deg);
+    }
+
+
+    100% {
+        transform: translateX(-700px);
+        scale: 50%;
+    }
+
+}
+
+.box {
+    text-align: center;
+    display: grid;
+    width: 50vw;
+    height: 50vh;
+    place-self: center;
+}
+
+.container {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 5fr;
+    grid-template-rows: auto;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+}
+
+@keyframes aparecer {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.overlay {
+    opacity: 0;
+    /* Inicialmente, o texto é oculto */
+    animation: aparecer 2000ms 5s ease-in-out forwards;
+    /* Aplicar a animação de aparecimento */
+    position: absolute;
+    top: 50%;
+    /* Posição vertical no centro */
+    left: 55%;
+    /* Posição horizontal no centro */
+    transform: translate(-50%, -50%);
+    /* Centraliza o elemento no centro absoluto */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10rem;
+    /* Define o tamanho da fonte como 2 rem (ou ajuste para o tamanho desejado) */
+    font-weight: bold;
+    /* Define a espessura da fonte como negrito (opcional) */
+    color: black;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
