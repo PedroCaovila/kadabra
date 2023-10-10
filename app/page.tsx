@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import DropDown, { DisciplinasType } from '../components/DropDown';
 import DropDown2, { HabilidadesType } from '../components/DropDown2';
@@ -13,7 +13,11 @@ import DropDown6, { DificuldadesType } from '../components/DropDown6';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { useChat } from 'ai/react';
-import React from 'react';
+
+interface DadosHabilidade {
+  chave: string;
+  descricao: string;
+}
 
 export default function Page() {
   const [bio, setBio] = useState('');
@@ -24,6 +28,26 @@ export default function Page() {
   const [idade, setidade] = useState('Selecione uma faixa etária...');
   const [dificuldade, setdificuldade] = useState('Selecione a dificuldade...');
   const bioRef = useRef<null | HTMLDivElement>(null);
+  const [dictDescription, setDictDescription] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    // Carregar dados do arquivo desc.json
+    async function fetchData() {
+      try {
+        const response = await fetch('desc.json');
+        const data: DadosHabilidade[] = await response.json();
+        const tempDict: { [key: string]: string } = {};
+        data.forEach((habilidade) => {
+          tempDict[habilidade.chave] = habilidade.descricao;
+        });
+        setDictDescription(tempDict);
+      } catch (error) {
+        console.error('Erro ao carregar dados do arquivo desc.json:', error);
+      }
+    }
+
+    fetchData();
+  }, []); // O array vazio [] garante que o useEffect só seja executado uma vez, após a montagem do componente
 
   const scrollToBios = () => {
     if (bioRef.current !== null) {
@@ -31,26 +55,26 @@ export default function Page() {
     }
   };
 
-  const { input, handleInputChange, handleSubmit, isLoading, messages } =
-    useChat({
-      body: {
-        disciplina,
-        habilidade,
-        atividade,
-        objetivo,
-        idade,
-        dificuldade,
-        bio,
-      },
-      onResponse() {
-        scrollToBios();
-      },
-    });
+  const { input, handleInputChange, handleSubmit, isLoading, messages } = useChat({
+    body: {
+      disciplina,
+      habilidade,
+      atividade,
+      objetivo,
+      idade,
+      dificuldade,
+      bio,
+    },
+    onResponse() {
+      scrollToBios();
+    },
+  });
 
   const onSubmit = (e: any) => {
+    // Lógica de envio do formulário, se necessário
   };
 
-  const frase = "Utilizando como a habilidade " + habilidade + " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " + objetivo + ", elabore uma/um " + atividade + " de nível " + dificuldade + " da disciplina " + disciplina + " com o tema " + input + " para alunos de " + idade + ".";
+  const frase = "Utilizando como a habilidade " + {habilidade} + " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " + {objetivo} + ", elabore uma/um " + {atividade} + " de nível " + {dificuldade} + " da disciplina " + {disciplina} + " com o tema " + {input} + " para alunos de " + {idade} + ".";
 
   return (
     <div className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
@@ -113,6 +137,7 @@ export default function Page() {
             <DropDown2 habilidade={habilidade} sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)} />
           </div>
 
+
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/4-black.png" width={28} height={28} alt="1 icon" />
             <p className="text-left font-medium">Escolha o tipo de atividade.</p>
@@ -152,7 +177,7 @@ export default function Page() {
           <Toaster
             position="bottom-center"
             reverseOrder={false}
-            toastOptions={{ duration: 2000 }}
+            toastOptions={{ duration: 3000 }}
           />
           <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
           {!isLoading && (
@@ -165,8 +190,6 @@ export default function Page() {
               }}
             >
               Gerar palavras mágicas &rarr;
-
-
             </button>
           )}
           {isLoading && (
