@@ -183,7 +183,7 @@ export default function Page() {
           {!isLoading && (
             <button
               className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-70"
-              type="submit"
+              type="button"
               onClick={() => {
                 navigator.clipboard.writeText(frase);
                 toast('Comando copiado para a área de transferência', { icon: '📋' });
