@@ -1,18 +1,18 @@
+"use client";
 
-'use client';
-
-import Image from 'next/image';
-import React, { useRef, useState, useEffect } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
-import DropDown, { DisciplinasType } from '../components/DropDown';
-import DropDown2, { HabilidadesType } from '../components/DropDown2';
-import DropDown3, { AtividadesType } from '../components/DropDown3';
-import DropDown4, { ObjetivosType } from '../components/DropDown4';
-import DropDown5, { IdadesType } from '../components/DropDown5';
-import DropDown6, { DificuldadesType } from '../components/DropDown6';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import { useChat } from 'ai/react';
+import Image from "next/image";
+import React, { useRef, useState, useEffect } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import DropDown, { DisciplinasType } from "../components/DropDown";
+import DropDown2, { HabilidadesType } from "../components/DropDown2";
+import DropDown3, { AtividadesType } from "../components/DropDown3";
+import DropDown4, { ObjetivosType } from "../components/DropDown4";
+import DropDown5, { IdadesType } from "../components/DropDown5";
+import DropDown6, { DificuldadesType } from "../components/DropDown6";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import { useChat } from "ai/react";
+import { Atividade } from "../data/atividades";
 
 interface DadosHabilidade {
   chave: string;
@@ -20,21 +20,23 @@ interface DadosHabilidade {
 }
 
 export default function Page() {
-  const [bio, setBio] = useState('');
-  const [disciplina, setdisciplina] = useState('Selecione a disciplina...');
-  const [habilidade, sethabilidade] = useState('Selecione a habilidade...');
-  const [atividade, setatividade] = useState('Selecione a atividade...');
-  const [objetivo, setobjetivo] = useState('Selecione um objetivo...');
-  const [idade, setidade] = useState('Selecione uma faixa etária...');
-  const [dificuldade, setdificuldade] = useState('Selecione a dificuldade...');
+  const [bio, setBio] = useState("");
+  const [disciplina, setdisciplina] = useState("Selecione a disciplina...");
+  const [habilidade, sethabilidade] = useState("Selecione a habilidade...");
+  const [atividade, setatividade] = useState({} as Atividade);
+  const [objetivo, setobjetivo] = useState("Selecione um objetivo...");
+  const [idade, setidade] = useState("Selecione uma faixa etária...");
+  const [dificuldade, setdificuldade] = useState("Selecione a dificuldade...");
   const bioRef = useRef<null | HTMLDivElement>(null);
-  const [dictDescription, setDictDescription] = useState<{ [key: string]: string }>({});
+  const [dictDescription, setDictDescription] = useState<{
+    [key: string]: string;
+  }>({});
 
   useEffect(() => {
     // Carregar dados do arquivo desc.json
     async function fetchData() {
       try {
-        const response = await fetch('desc.json');
+        const response = await fetch("desc.json");
         const data: DadosHabilidade[] = await response.json();
         const tempDict: { [key: string]: string } = {};
         data.forEach((habilidade) => {
@@ -42,7 +44,7 @@ export default function Page() {
         });
         setDictDescription(tempDict);
       } catch (error) {
-        console.error('Erro ao carregar dados do arquivo desc.json:', error);
+        console.error("Erro ao carregar dados do arquivo desc.json:", error);
       }
     }
 
@@ -51,43 +53,60 @@ export default function Page() {
 
   const scrollToBios = () => {
     if (bioRef.current !== null) {
-      bioRef.current.scrollIntoView({ behavior: 'smooth' });
+      bioRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const { input, handleInputChange, handleSubmit, isLoading, messages } = useChat({
-    body: {
-      disciplina,
-      habilidade,
-      atividade,
-      objetivo,
-      idade,
-      dificuldade,
-      bio,
-    },
-    onResponse() {
-      scrollToBios();
-    },
-  });
+  const { input, handleInputChange, handleSubmit, isLoading, messages } =
+    useChat({
+      body: {
+        disciplina,
+        habilidade,
+        atividade,
+        objetivo,
+        idade,
+        dificuldade,
+        bio,
+      },
+      onResponse() {
+        scrollToBios();
+      },
+    });
 
   const onSubmit = (e: any) => {
     // Lógica de envio do formulário, se necessário
   };
 
-  const frase = "Utilizando como a habilidade " + {habilidade} + " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " + {objetivo} + ", elabore uma/um " + {atividade} + " de nível " + {dificuldade} + " da disciplina " + {disciplina} + " com o tema " + {input} + " para alunos de " + {idade} + ".";
+  const frase =
+    "Utilizando como a habilidade " +
+    { habilidade } +
+    " da BNCC, mas sem cita-la, crie um pequeno texto base utilizando a Taxonomia de Bloom na finalidade de " +
+    { objetivo } +
+    ", elabore uma/um " +
+    { atividade } +
+    " de nível " +
+    { dificuldade } +
+    " da disciplina " +
+    { disciplina } +
+    " com o tema " +
+    { input } +
+    " para alunos de " +
+    { idade } +
+    ".";
 
   return (
-    <div className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
-      style={{ background: "no-repeat center/cover url(/bkgrnd.png)" }}>
-
+    <div
+      className="flex  mx-auto flex-col items-center justify-center py-2 min-h-screen bg-cover bg-contain"
+      style={{ background: "no-repeat center/cover url(/bkgrnd.png)" }}
+    >
       <Header />
-      <main
-        className="backdrop-blur-[1px] rounded-lg bg-white/70 flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain">
-
+      <main className="backdrop-blur-[1px] rounded-lg bg-white/70 flex flex-1 flex-col items-center justify-center text-center px-auto sm:mt-10 bg-cover bg-contain">
         <h1 className="sm:text-5xl text-4xl max-w-[900px] font-bold mt-10 text-slate-900">
           Qual atividade você gostaria de elaborar hoje?
         </h1>
-        <p className="text-slate-500 mt-5 font-semibold">Usando IA para elaborar atividades escolares em um passe de mágica.</p>
+        <p className="text-slate-500 mt-5 font-semibold">
+          Usando IA para elaborar atividades escolares em um passe de mágica.
+        </p>
         <form className="max-w-xl w-full" onSubmit={onSubmit}>
           <div className="flex mt-10 items-center space-x-3">
             <Image
@@ -98,7 +117,7 @@ export default function Page() {
               className="mb-5 sm:mb-0"
             />
             <p className="text-left font-medium">
-              Descreva brevemente o tema de sua atividade{' '}
+              Descreva brevemente o tema de sua atividade{" "}
               <span className="text-slate-500">
                 (ou digite algumas palavras chave e eu cuidarei do resto)
               </span>
@@ -120,59 +139,90 @@ export default function Page() {
             <p className="text-left font-medium">Escolha a disciplina.</p>
           </div>
           <div className="block">
-            <DropDown disciplina={disciplina} setdisciplina={(newdisciplina) => setdisciplina(newdisciplina)} />
+            <DropDown
+              disciplina={disciplina}
+              setdisciplina={(newdisciplina) => setdisciplina(newdisciplina)}
+            />
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/3-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha a habilidade BNCC desejada.{' '}
+            <p className="text-left font-medium">
+              Escolha a habilidade BNCC desejada.{" "}
               <span className="text-slate-500">
-                <a href="https://media.tutormundi.com/wp-content/uploads/2021/01/27200057/habilidades-bncc-ensino-fundamental-1024x1024.png" target="_blank">
+                <a
+                  href="https://media.tutormundi.com/wp-content/uploads/2021/01/27200057/habilidades-bncc-ensino-fundamental-1024x1024.png"
+                  target="_blank"
+                >
                   (Saiba mais)
                 </a>
               </span>
             </p>
           </div>
           <div className="block">
-            <DropDown2 habilidade={habilidade} sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)} />
+            <DropDown2
+              habilidade={habilidade}
+              sethabilidade={(newhabilidade) => sethabilidade(newhabilidade)}
+            />
           </div>
-
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/4-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha o tipo de atividade.</p>
+            <p className="text-left font-medium">
+              Escolha o tipo de atividade.
+            </p>
           </div>
           <div className="block">
-            <DropDown3 atividade={atividade} setatividade={(newatividade) => setatividade(newatividade)} />
+            <DropDown3
+              atividade={atividade}
+              setatividade={(newatividade) => setatividade(newatividade)}
+            />
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/5-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha qual o objetivo da sua atividade{' '}
+            <p className="text-left font-medium">
+              Escolha qual o objetivo da sua atividade{" "}
               <span className="text-slate-500">
-                (usaremos a Taxonomia de Bloom para ajudar na criação da atividade)
+                (usaremos a Taxonomia de Bloom para ajudar na criação da
+                atividade)
               </span>
               .
             </p>
           </div>
           <div className="block">
-            <DropDown4 objetivo={objetivo} setobjetivo={(newobjetivo) => setobjetivo(newobjetivo)} />
+            <DropDown4
+              objetivo={objetivo}
+              setobjetivo={(newobjetivo) => setobjetivo(newobjetivo)}
+            />
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/6-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha a faixa etária dos alunos.</p>
+            <p className="text-left font-medium">
+              Escolha a faixa etária dos alunos.
+            </p>
           </div>
           <div className="block">
-            <DropDown5 idade={idade} setidade={(newidade) => setidade(newidade)} />
+            <DropDown5
+              idade={idade}
+              setidade={(newidade) => setidade(newidade)}
+            />
           </div>
 
           <div className="flex mt-5 mb-5 items-center space-x-3">
             <Image src="/7-black.png" width={28} height={28} alt="1 icon" />
-            <p className="text-left font-medium">Escolha a dificuldade da atividade.</p>
+            <p className="text-left font-medium">
+              Escolha a dificuldade da atividade.
+            </p>
           </div>
           <div className="block">
-            <DropDown6 dificuldade={dificuldade} setdificuldade={(newdificuldade) => setdificuldade(newdificuldade)} />
+            <DropDown6
+              dificuldade={dificuldade}
+              setdificuldade={(newdificuldade) =>
+                setdificuldade(newdificuldade)
+              }
+            />
           </div>
           <Toaster
             position="bottom-center"
@@ -186,7 +236,9 @@ export default function Page() {
               type="submit"
               onClick={() => {
                 navigator.clipboard.writeText(frase);
-                toast('Comando copiado para a área de transferência', { icon: '📋' });
+                toast("Comando copiado para a área de transferência", {
+                  icon: "📋",
+                });
               }}
             >
               Gerar palavras mágicas &rarr;
@@ -198,16 +250,14 @@ export default function Page() {
               disabled
             >
               <span className="loading">
-                <span style={{ backgroundColor: 'white' }} />
-                <span style={{ backgroundColor: 'white' }} />
-                <span style={{ backgroundColor: 'white' }} />
+                <span style={{ backgroundColor: "white" }} />
+                <span style={{ backgroundColor: "white" }} />
+                <span style={{ backgroundColor: "white" }} />
               </span>
             </button>
           )}
         </form>
-        <output className="space-y-10 my-10">
-
-        </output>
+        <output className="space-y-10 my-10"></output>
       </main>
       <Footer />
     </div>

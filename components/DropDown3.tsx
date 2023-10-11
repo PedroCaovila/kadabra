@@ -5,6 +5,7 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
 import { Fragment, useEffect, useState } from "react";
+import { ATIVIDADES, Atividade } from "../data/atividades";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -13,24 +14,12 @@ function classNames(...classes: string[]) {
 export type AtividadesType = "Selecione a atividade...";
 
 interface Dropdown3Props {
-  atividade: string; // Altere para usar uma string em vez de um tipo fixo
-  setatividade: (atividade: string) => void;
+  atividade: Atividade; // Altere para usar uma string em vez de um tipo fixo
+  setatividade: (atividade: Atividade) => void;
 }
 
 export default function Dropdown3({ atividade, setatividade }: Dropdown3Props) {
-  const [atividades, setAtividades] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Carregar atividades do arquivo de texto "atividades.txt"
-    fetch('atividades.txt')
-      .then(response => response.text())
-      .then(data => {
-        // Dividir o conteúdo do arquivo em linhas e remover linhas em branco
-        const lines = data.split('\n').filter(line => line.trim() !== '');
-
-        setAtividades(lines);
-      });
-  }, []); // Executa apenas uma vez durante o carregamento do componente
+  const [atividades, setAtividades] = useState<Atividade[]>([]);
 
   return (
     <Menu as="div" className="relative block text-left w-full">
@@ -62,8 +51,8 @@ export default function Dropdown3({ atividade, setatividade }: Dropdown3Props) {
           key={atividade}
         >
           <div className="">
-            {atividades.map((atividadeItem) => (
-              <Menu.Item key={atividadeItem}>
+            {ATIVIDADES.map((atividadeItem) => (
+              <Menu.Item key={atividadeItem.id}>
                 {({ active }) => (
                   <button
                     onClick={() => setatividade(atividadeItem)}
@@ -73,7 +62,7 @@ export default function Dropdown3({ atividade, setatividade }: Dropdown3Props) {
                       "px-4 py-2 text-sm w-full text-left flex items-center space-x-2 justify-between"
                     )}
                   >
-                    <span>{atividadeItem}</span>
+                    <span>{atividadeItem.description}</span>
                     {atividade === atividadeItem ? (
                       <CheckIcon className="w-4 h-4 text-bold" />
                     ) : null}
