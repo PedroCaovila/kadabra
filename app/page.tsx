@@ -23,7 +23,7 @@ export default function Page() {
   const [bio, setBio] = useState("");
   const [disciplina, setdisciplina] = useState("Selecione a disciplina...");
   const [habilidade, sethabilidade] = useState("Selecione a habilidade...");
-  const [atividade, setatividade] = useState({} as Atividade);
+  const [atividade, setAtividade] = useState("Selecione a atividade...");
   const [objetivo, setobjetivo] = useState("Selecione um objetivo...");
   const [idade, setidade] = useState("Selecione uma faixa etária...");
   const [dificuldade, setdificuldade] = useState("Selecione a dificuldade...");
@@ -32,24 +32,24 @@ export default function Page() {
     [key: string]: string;
   }>({});
 
-  useEffect(() => {
-    // Carregar dados do arquivo desc.json
-    async function fetchData() {
-      try {
-        const response = await fetch("desc.json");
-        const data: DadosHabilidade[] = await response.json();
-        const tempDict: { [key: string]: string } = {};
-        data.forEach((habilidade) => {
-          tempDict[habilidade.chave] = habilidade.descricao;
-        });
-        setDictDescription(tempDict);
-      } catch (error) {
-        console.error("Erro ao carregar dados do arquivo desc.json:", error);
-      }
-    }
+  // useEffect(() => {
+  //   // Carregar dados do arquivo desc.json
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch("desc.json");
+  //       const data: DadosHabilidade[] = await response.json();
+  //       const tempDict: { [key: string]: string } = {};
+  //       data.forEach((habilidade) => {
+  //         tempDict[habilidade.chave] = habilidade.descricao;
+  //       });
+  //       setDictDescription(tempDict);
+  //     } catch (error) {
+  //       console.error("Erro ao carregar dados do arquivo desc.json:", error);
+  //     }
+  //   }
 
-    fetchData();
-  }, []); // O array vazio [] garante que o useEffect só seja executado uma vez, após a montagem do componente
+  //   fetchData();
+  // }, []); // O array vazio [] garante que o useEffect só seja executado uma vez, após a montagem do componente
 
   const scrollToBios = () => {
     if (bioRef.current !== null) {
@@ -174,8 +174,8 @@ export default function Page() {
           </div>
           <div className="block">
             <DropDown3
-              atividade={atividade}
-              setatividade={(newatividade) => setatividade(newatividade)}
+              description={atividade}
+              setAtividade={(newAtividade) => setAtividade(newAtividade)}
             />
           </div>
 
